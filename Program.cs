@@ -33,11 +33,9 @@ var app = builder.Build();
 // =====================
 // Middleware pipeline // Configure the HTTP request pipeline.
 // =====================
-if (app.Environment.IsDevelopment())
-{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+
 // In local → HTTPS             ✔ In Render → No redirect loop
 if (!app.Environment.IsProduction())
 {
