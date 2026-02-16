@@ -1,0 +1,19 @@
+﻿{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=[2406:da18:243:7408:1a87:955e:35df:37dc];Port=5432;Database=postgres;Username=postgres;Password=Supa@Dupa12;SSL Mode=Require;Trust Server Certificate=true"
+  },
+  "Jwt": {
+    "Key": "THIS_IS_SUPER_SECRET_KEY_CHANGE_IT",
+    "Issuer": "NearzoAPI",
+    "Audience": "NearzoAPIUsers",
+    "AccessTokenExpiryMinutes": 30,
+    "RefreshTokenExpiryDays": 7
+  },
+  "AllowedHosts": "*"
+}
