@@ -1,0 +1,9 @@
+# Build and IDE folders (Safe to ignore)
+bin/
+obj/
+.vs/
+
+# User-specific files
+*.user
+*.userosscache
+*.sln.docstates

@@ -1,6 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NearzoAPI.Data;
-using NearzoAPI.Services.Implementations;
+using NearzoAPI.Entities;
 using NearzoAPI.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,13 +11,20 @@ var conn = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
-        o => o.EnableRetryOnFailure()
+        o =>
+        {
+            o.CommandTimeout(60);
+        }
     )
 );
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 AppContext.SetSwitch("Npgsql.DisablePreparedStatements", true);
 
 // Register services
+builder.Services
+    .AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 builder.Services.AddScoped<IAuthService, AuthService>();
 //builder.Services.AddScoped<IDealService, DealService>();
 //builder.Services.AddScoped<IOrderService, OrderService>();
@@ -27,6 +35,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //
+//
+
 var app = builder.Build();
 
 
@@ -46,5 +56,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-app.Run($"http://0.0.0.0:{port}");
+//var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+//app.Run($"http://0.0.0.0:{port}");
+app.Run();

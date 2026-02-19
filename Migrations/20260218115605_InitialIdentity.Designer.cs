@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NearzoAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260212103809_InitialIdentity")]
+    [Migration("20260218115605_InitialIdentity")]
     partial class InitialIdentity
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace NearzoAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.3")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -323,7 +323,6 @@ namespace NearzoAPI.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
@@ -349,7 +348,6 @@ namespace NearzoAPI.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")

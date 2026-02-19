@@ -31,10 +31,10 @@ namespace NearzoAPI.Controllers
                         ApiResponse<AuthResponseDto>.FailResponse(ex.Message)
                     );
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return StatusCode(500,
-                    ApiResponse<AuthResponseDto>.FailResponse("Something went wrong")
+                    ApiResponse<AuthResponseDto>.FailResponse(e.Message)
                 );
             }
         }
