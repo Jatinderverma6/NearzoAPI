@@ -1,0 +1,10 @@
+version: 1.0
+runtime: dotnet8
+build:
+  commands:
+    build:
+      - dotnet publish -c Release -o out
+run:
+  command: dotnet out/NeazoAPI.dll
+  network:
+    port: 8080
