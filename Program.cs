@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using NearzoAPI.Common;
 using NearzoAPI.Data;
 using NearzoAPI.Entities;
+using NearzoAPI.Services.Implementations;
 using NearzoAPI.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +29,24 @@ builder.Services
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.Configure<EmailSettings>(
+    builder.Configuration.GetSection("EmailSettings")
+);
+
+builder.Services.AddScoped<IEmailService, EmailService>();
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("EmailPolicy", opt =>
+    {
+        opt.PermitLimit = 2; // 5 requests
+        opt.Window = TimeSpan.FromMinutes(1);
+        opt.QueueLimit = 0;
+    });
+});
+
+
 //builder.Services.AddScoped<IDealService, DealService>();
 //builder.Services.AddScoped<IOrderService, OrderService>();
 //builder.Services.AddScoped<IReviewService, ReviewService>();
@@ -39,11 +60,11 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-
+app.UseRateLimiter();
 // =====================
 // Middleware pipeline // Configure the HTTP request pipeline.
 // =====================
-    app.UseSwagger();
+app.UseSwagger();
     app.UseSwaggerUI();
 
 // In local → HTTPS             ✔ In Render → No redirect loop

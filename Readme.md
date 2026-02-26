@@ -1,0 +1,75 @@
+dotnet new webapi -n NearzoAPI
+cd NearzoAPI
+
+Install Following Dependencies:
+	dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
+	dotnet add package Microsoft.EntityFrameworkCore.Tools
+	dotnet add package Microsoft.EntityFrameworkCore.Design
+	dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+	dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
+	dotnet add package Swashbuckle.AspNetCore
+	dotnet add package BCrypt.Net-Next
+
+
+
+Createt Migration:
+dotnet ef migrations add InitialIdentity
+To undo this, use     ef migrations remove
+
+Apply Migration(will not work on Supabase):
+dotnet ef database update
+
+Note: Migration can't be applied in pooling mode as multiple transactions executes while migration.
+	  So, generate migration script copy and execute on Subase SQL Editor
+Pooling Connection Supabase DB String:
+Host=aws-1-ap-southeast-1.pooler.supabase.com;Port=6543;Database=postgres;Username=postgres.vmsmoolcylpdihwayibd;Password=Supa@Dupa12;SSL Mode=Require;Trust Server Certificate=true;Pooling=true;Multiplexing=false;
+Direct Connection Supabase DB String:
+postgresql://postgres:Supa@Dupa12@db.vmsmoolcylpdihwayibd.supabase.co:5432/postgres
+Working ConnectionString:
+    "DefaultConnection": "Host=aws-1-ap-southeast-1.pooler.supabase.com;Port=6543;Database=postgres;Username=postgres.vmsmoolcylpdihwayibd;Password=Password;SSL Mode=Require;Trust Server Certificate=true;Pooling=false;Multiplexing=false;Keepalive=30;Command Timeout=180;"
+
+Instead of using EF to create tables:
+	Generate SQL script from EF:
+		dotnet ef migrations script
+		dotnet ef migrations script 0 InitialIdentity --output init.sql
+	Copy the SQL output
+	Paste into Supabase → SQL Editor
+	Run manually
+
+Done.
+
+Once new opt fields added in User Entity
+Create new migration:
+
+dotnet ef migrations add AddOtpFieldsToUser
+
+dotnet ef migrations script AddOtpFieldsToUser -o AddOtpFieldsToUser.sql
+
+
+launchSettings.json: (Removed ConnectionString for deployment)
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=aws-1-ap-southeast-1.pooler.supabase.com;Port=6543;Database=postgres;Username=postgres.vmsmoolcylpdihwayibd;Password=Supa@Dupa12;SSL Mode=Require;Trust Server Certificate=true;Pooling=true;Multiplexing=false;"
+  },
+"Jwt": {
+"Key": "THIS_IS_SUPER_SECRET_KEY_CHANGE_IT",
+"Issuer": "NearzoAPI",
+"Audience": "NearzoAPIUsers",
+"AccessTokenExpiryMinutes": 30,
+"RefreshTokenExpiryDays": 7
+},
+
+Hosting:
+
+  https://dashboard.render.com/
+  Web Services (New Web Service)
+
+Adding .net package for email
+	dotnet add package MailKit
+
+Adding detail in appsettings.json:
+"EmailSettings": {
+    "Email": "nearzoapp@gmail.com",
+    "Password": "pass",
+    "Host": "smtp.gmail.com",
+    "Port": 587
+  },

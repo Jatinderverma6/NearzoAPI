@@ -16,5 +16,12 @@ namespace NearzoAPI.Entities
         public DateTime? RefreshTokenExpiryTime { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        // 🔐 OTP Flow Fields
+        public string? PasswordResetOtpHash { get; set; }
+        public DateTime? PasswordResetOtpExpiry { get; set; }
+
+        public string? TempResetToken { get; set; }
+        public DateTime? TempResetTokenExpiry { get; set; }
     }
 }
