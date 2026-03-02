@@ -33,5 +33,25 @@ namespace NearzoAPI.Controllers
              );
             }
         }
+
+        [HttpPost("openrouterchat")]
+        public async Task<IActionResult> openrouterchat([FromBody] string request)
+        {
+            if (request.IsNullOrEmpty())
+                return BadRequest(request);
+            //
+            try
+            {
+                var response = await _aiService.GetOpenRouterChatResponseAsync(request);
+                return Ok(ApiResponse<string>.SuccessResponse(response));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return BadRequest(
+                 ApiResponse<object>.FailResponse($"Error: {ex.Message}")
+             );
+            }
+        }
     }
 }

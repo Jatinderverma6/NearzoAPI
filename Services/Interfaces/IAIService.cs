@@ -3,5 +3,6 @@
     public interface IAIService
     {
         Task<string> GetChatResponseAsync(string message);
+        Task<string> GetOpenRouterChatResponseAsync(string message);
     }
 }
