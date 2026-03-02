@@ -17,32 +17,40 @@ namespace NearzoAPI.Services.Implementations
 
         public async Task<string> GetChatResponseAsync(string message)
         {
-            var apiKey = _configuration["AI:ApiKey"];
-
-            var requestBody = new
+            try
             {
-                message = message
-            };
+                var apiKey = _configuration["AI:ApiKey"];
 
-            var request = new HttpRequestMessage(HttpMethod.Post, "https://apifreellm.com/api/v1/chat");
-            request.Headers.Add("Authorization", $"Bearer {apiKey}");
-            request.Content = new StringContent(
-                JsonSerializer.Serialize(requestBody),
-                Encoding.UTF8,
-                "application/json");
+                var requestBody = new
+                {
+                    message = message
+                };
 
-            var response = await _httpClient.SendAsync(request);
+                var request = new HttpRequestMessage(HttpMethod.Post, "https://apifreellm.com/api/v1/chat");
+                request.Headers.Add("Authorization", $"Bearer {apiKey}");
+                request.Content = new StringContent(
+                    JsonSerializer.Serialize(requestBody),
+                    Encoding.UTF8,
+                    "application/json");
 
-            if (!response.IsSuccessStatusCode)
-            {
-                return "AI service failed.";
+                var response = await _httpClient.SendAsync(request);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return "AI service failed.";
+                }
+
+                var json = await response.Content.ReadAsStringAsync();
+
+                var result = JsonSerializer.Deserialize<JsonElement>(json);
+
+                return result.GetProperty("response").GetString()?? "";
             }
-
-            var json = await response.Content.ReadAsStringAsync();
-
-            var result = JsonSerializer.Deserialize<JsonElement>(json);
-
-            return result.GetProperty("response").GetString();
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in AI service:: {ex.Message}");
+                return $"Error in AI service: {ex.Message}";
+            }
         }
     }
 }

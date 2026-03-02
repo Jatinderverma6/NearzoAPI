@@ -22,7 +22,7 @@ dotnet ef database update
 Note: Migration can't be applied in pooling mode as multiple transactions executes while migration.
 	  So, generate migration script copy and execute on Subase SQL Editor
 Pooling Connection Supabase DB String:
-Host=aws-1-ap-southeast-1.pooler.supabase.com;Port=6543;Database=postgres;Username=postgres.vmsmoolcylpdihwayibd;Password=Supa@Dupa12;SSL Mode=Require;Trust Server Certificate=true;Pooling=true;Multiplexing=false;
+Host=aws-1-ap-southeast-1.pooler.supabase.com;Port=6543;Database=postgres;Username=postgres.vmsmoolcylpdihwayibd;Password=PASSWORD;SSL Mode=Require;Trust Server Certificate=true;Pooling=true;Multiplexing=false;
 Direct Connection Supabase DB String:
 postgresql://postgres:Supa@Dupa12@db.vmsmoolcylpdihwayibd.supabase.co:5432/postgres
 Working ConnectionString:
@@ -48,7 +48,7 @@ dotnet ef migrations script AddOtpFieldsToUser -o AddOtpFieldsToUser.sql
 
 launchSettings.json: (Removed ConnectionString for deployment)
   "ConnectionStrings": {
-    "DefaultConnection": "Host=aws-1-ap-southeast-1.pooler.supabase.com;Port=6543;Database=postgres;Username=postgres.vmsmoolcylpdihwayibd;Password=Supa@Dupa12;SSL Mode=Require;Trust Server Certificate=true;Pooling=true;Multiplexing=false;"
+    "DefaultConnection": "Host=aws-1-ap-southeast-1.pooler.supabase.com;Port=6543;Database=postgres;Username=postgres.vmsmoolcylpdihwayibd;Password=PASSWORD;SSL Mode=Require;Trust Server Certificate=true;Pooling=true;Multiplexing=false;"
   },
 "Jwt": {
 "Key": "THIS_IS_SUPER_SECRET_KEY_CHANGE_IT",

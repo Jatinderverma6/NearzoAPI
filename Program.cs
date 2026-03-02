@@ -40,12 +40,13 @@ builder.Services.AddRateLimiter(options =>
 {
     options.AddFixedWindowLimiter("EmailPolicy", opt =>
     {
-        opt.PermitLimit = 2; // 5 requests
+        opt.PermitLimit = 2; // 2 requests
         opt.Window = TimeSpan.FromMinutes(1);
         opt.QueueLimit = 0;
     });
 });
-
+// AI Service
+builder.Services.AddHttpClient<IAIService, AIService>();
 
 //builder.Services.AddScoped<IDealService, DealService>();
 //builder.Services.AddScoped<IOrderService, OrderService>();
